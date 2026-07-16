@@ -36,7 +36,7 @@ contract ContentModerator is RitualBase {
             content: content,
             approved: approved,
             reason: result,
-            hasError: hasError,
+            hasError: false,
             timestamp: block.timestamp
         }));
 

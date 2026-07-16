@@ -34,7 +34,7 @@ contract ResumeScreener is RitualBase {
         returns (uint256 id)
     {
         string memory combined = string.concat(jobSpec, "\n---RESUME---\n", resumeText);
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, combined, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, combined, 300, 4096);
 
         id = screenings.length;
         screenings.push(Screening({
@@ -42,7 +42,7 @@ contract ResumeScreener is RitualBase {
             jobSpec: jobSpec,
             resumeText: resumeText,
             result: content,
-            hasError: hasError,
+            hasError: false,
             timestamp: block.timestamp
         }));
 

@@ -92,11 +92,11 @@ contract PriceAnomalyWatcher is RitualBase {
             prompt = string.concat(prompt, "\nTwo fetches ago:\n", prices[prices.length - 3].rawText);
         }
 
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, prompt, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, prompt, 300, 4096);
         bool anomalous = _containsAnomalyYes(content);
 
         uint256 id = checks.length;
-        checks.push(AnomalyCheck({assessment: content, anomalous: anomalous, hasError: hasError, timestamp: block.timestamp}));
+        checks.push(AnomalyCheck({assessment: content, anomalous: anomalous, hasError: false, timestamp: block.timestamp}));
         emit AnomalyChecked(id, anomalous);
     }
 

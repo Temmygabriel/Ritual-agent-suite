@@ -27,14 +27,14 @@ contract ClauseRiskFlagger is RitualBase {
 
     /// @param executor call pickLLMExecutor() first (free, view) and pass the result here.
     function analyzeClause(address executor, string calldata clauseText) external returns (uint256 id) {
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, clauseText, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, clauseText, 300, 4096);
 
         id = analyses.length;
         analyses.push(Analysis({
             requester: msg.sender,
             clauseText: clauseText,
             riskAssessment: content,
-            hasError: hasError,
+            hasError: false,
             timestamp: block.timestamp
         }));
 

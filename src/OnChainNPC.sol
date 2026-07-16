@@ -50,12 +50,12 @@ contract OnChainNPC is RitualBase {
             ? string.concat("Conversation so far:\n", context, "player: ", message)
             : string.concat("player: ", message);
 
-        (bool hasError, string memory content, ) = _callLLM(executor, npcPersona, prompt, 300, 4096);
+        string memory content = _callLLMSimple(executor, npcPersona, prompt, 300, 4096);
 
         history.push(Turn({speaker: "player", text: message, timestamp: block.timestamp}));
         history.push(Turn({speaker: "npc", text: content, timestamp: block.timestamp}));
 
-        emit NPCReplied(msg.sender, history.length - 1, hasError);
+        emit NPCReplied(msg.sender, history.length - 1, false);
         reply = content;
     }
 

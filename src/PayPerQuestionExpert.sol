@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import {RitualBase} from "./lib/RitualBase.sol";
+import {RitualBase, IRitualWallet} from "./lib/RitualBase.sol";
 
 /// @notice Anyone can pay a small RITUAL fee to ask a question and get one AI answer.
 ///         An ownerless, metered API -- no subscription, no centralized backend.
@@ -36,7 +36,7 @@ contract PayPerQuestionExpert is RitualBase {
 
         // Fund this contract's own RitualWallet balance with the payment so the
         // precompile fee for THIS call is covered before we submit it.
-        IRitualWallet(RITUAL_WALLET).deposit{value: msg.value}(5000);
+        IRitualWallet(RITUAL_WALLET).deposit{value: msg.value}(address(this), 5000);
 
         (bool hasError, string memory answer, ) = _callLLM(executor, SYSTEM_PROMPT, question, 300, 4096);
 

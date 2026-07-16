@@ -30,7 +30,7 @@ contract ExpenseAnomalyChecker is RitualBase {
         returns (uint256 id)
     {
         string memory combined = string.concat(policySummary, "\n---ITEMS---\n", lineItems);
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, combined, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, combined, 300, 4096);
 
         id = reviews.length;
         reviews.push(Review({
@@ -38,7 +38,7 @@ contract ExpenseAnomalyChecker is RitualBase {
             policySummary: policySummary,
             lineItems: lineItems,
             findings: content,
-            hasError: hasError,
+            hasError: false,
             timestamp: block.timestamp
         }));
 

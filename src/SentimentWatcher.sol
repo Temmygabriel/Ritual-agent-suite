@@ -88,11 +88,11 @@ contract SentimentWatcher is RitualBase {
         Snapshot memory latest = snapshots[snapshots.length - 1];
         string memory prompt = string.concat("Topic: ", topic, "\nRaw text:\n", latest.rawText);
 
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, prompt, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, prompt, 300, 4096);
         bool flagged = _containsFlagYes(content);
 
         uint256 id = reports.length;
-        reports.push(SentimentReport({summary: content, flagged: flagged, hasError: hasError, timestamp: block.timestamp}));
+        reports.push(SentimentReport({summary: content, flagged: flagged, hasError: false, timestamp: block.timestamp}));
         emit SentimentAnalyzed(id, flagged);
     }
 

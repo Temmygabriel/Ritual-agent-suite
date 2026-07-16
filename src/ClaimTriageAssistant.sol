@@ -28,14 +28,14 @@ contract ClaimTriageAssistant is RitualBase {
         "approved, denied, or paid.";
 
     function submitClaim(address executor, string calldata details) external returns (uint256 id) {
-        (bool hasError, string memory content, ) = _callLLM(executor, SYSTEM_PROMPT, details, 300, 4096);
+        string memory content = _callLLMSimple(executor, SYSTEM_PROMPT, details, 300, 4096);
 
         id = claims.length;
         claims.push(Claim({
             submitter: msg.sender,
             details: details,
             triageNotes: content,
-            hasError: hasError,
+            hasError: false,
             timestamp: block.timestamp,
             reviewed: false
         }));
