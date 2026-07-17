@@ -2,6 +2,6 @@
 out/
 cache/
 broadcast/
-lib/
+/lib/
 node_modules/
 .vscode/
